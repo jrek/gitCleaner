@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+    <head>
+        <link rel="stylesheet" href="/css/materialize.css">
+        <link rel="stylesheet" href="/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/css/styles.css">
+        <script type="text/javascript" src="/js/jquery.min.js"></script>
+        <script type="text/javascript" src="/js/materialize.js"></script>
+        <script type="text/javascript" src="/js/index.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <nav class="navigator">
+                <div class="nav-wrapper">
+                    <ul class="right">
+                        <li>
+                            <a href="/settings">
+                                <span class="fa fa-share-alt"></span>
+                                <span>Repos</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/settings">
+                                <span class="fa fa-cogs"></span>
+                                <span>Settings</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="card-panel grey lighten-5 z-depth-1">
+                <form action="/" method="post">
+                    <div class="row">
+                        <div class="input-field col s5">
+                            <select name="selectedRepo">
+                                {% for repo, path in repos %}
+                                    <option value="{{ repo }}" {% if repo == selectedRepo %}selected{% endif %}>{{ repo }}</option>
+                                {% endfor %}
+                            </select>
+                            <label>Repos</label>
+                        </div>
+                        <div class="col s7">
+                            <button type="submit" class="btn waves-effect waves-light">
+                                <i class="fa fa-code-fork"></i>
+                                Switch repo
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <form action="/index/delete" method="post">
+                <input type="hidden" name="selectedRepo" value="{{ selectedRepo }}">
+                <div class="row">
+                    <div class="col s12">
+                        <table class="highlight responsive-table">
+                            <thead>
+                                <tr>
+                                    <th>Delete?</th>
+                                    <th>Branch</th>
+                                    <th>Has Remote</th>
+                                    <th>Jira Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for branch, data in branches %}
+                                <tr>
+                                    <td class="checkboxAction">
+                                        <label>
+                                            <input type="checkbox" name="branches[]" value="{{ branch }}"/>
+                                            <span></span>
+                                        </label>
+                                    </td>
+                                    <td>{{ branch }}</td>
+                                    <td>
+                                        <span class="badge{% if data.hasRemote  %} has {% else %} no {% endif %}">
+                                            {% if data.hasRemote  %}YES{% else %}NO{% endif %}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge{% if data.status == 'Closed' %} closed {% elseif data.status == false %} none {% else %} inProgress {% endif %}">
+                                            {{ data.status }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-panel grey lighten-5 z-depth-1">
+                    <div class="row">
+                        <div class="input-field col s5"></div>
+                        <div class="input-field col s5">
+                            <button type="submit" class="btn waves-effect waves-light">
+                                <i class="fa fa-trash-o"></i>
+                                Delete Selected
+                            </button>
+                        </div>
+                    </div>
+            </form>
+        </div>
+
+    </body>
+</html>

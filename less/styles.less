@@ -1,0 +1,30 @@
+.navigator {
+  background-color: #3B3A35;
+}
+
+span.badge {
+  border-radius: 2px;
+  -moz-box-shadow:    inset 0 0 5px #ccc;
+  -webkit-box-shadow: inset 0 0 5px #ccc;
+  box-shadow:         inset 0 0 5px #ccc;
+
+  &.has {
+    background-color: red;
+    color: #FFF;
+  }
+
+  &.closed,
+  &.no {
+    background-color: #1CC;
+    color: #FFF;
+  }
+
+  &.inProgress {
+    background-color: #FFBB00;
+    color: #1A1E28;
+  }
+
+  &.none {
+    display: none;
+  }
+}
