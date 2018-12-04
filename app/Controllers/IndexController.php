@@ -43,22 +43,25 @@ class IndexController extends BaseController
             $repoKey = array_shift( $keys );
             $selectedRepo = $repoKey;
         }
-        $selectedRepoPath = $repos[ $selectedRepo ];
-
-        $branchesData = $this->gitHelper->getBranches($selectedRepoPath);
 
         $branches = [];
-        foreach ($branchesData as $branch) {
 
-            $branches[ $branch ]['status'] = false;
-            $branches[ $branch ]['hasRemote'] = $this->gitHelper->hasRemote($branch);
+        if (!empty($repos[ $selectedRepo ])) {
+            $selectedRepoPath = $repos[$selectedRepo];
+            $branchesData = $this->gitHelper->getBranches($selectedRepoPath);
 
-            if (strlen(preg_replace("/(ET-[\d]+)/","",$branch)) != 0) {
-                continue;
+            foreach ($branchesData as $branch) {
+
+                $branches[$branch]['status'] = false;
+                $branches[$branch]['hasRemote'] = $this->gitHelper->hasRemote($branch);
+
+                if (strlen(preg_replace("/(ET-[\d]+)/", "", $branch)) != 0) {
+                    continue;
+                }
+
+                $branches[$branch]['status'] = $this->jiraHelper->getIssueStatus($branch);
+
             }
-
-            $branches[$branch]['status'] = $this->jiraHelper->getIssueStatus($branch);
-
         }
 
         $this->render('index/index.twig', compact('branches', 'repos', 'selectedRepo'));

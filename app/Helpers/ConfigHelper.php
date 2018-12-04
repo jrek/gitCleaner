@@ -31,14 +31,18 @@ class ConfigHelper
         ) {
             throw new RuntimeException('Cannot read default config');
         }
-        if (empty($this->configFilePath)
-            || !is_readable($this->configFilePath)
-        ) {
-            throw new RuntimeException('Cannot read config');
-        }
+
 
         $this->defaultConfig = include $this->defaultConfigFilePath;
-        $this->config = include $this->configFilePath;
+        if (!empty($this->configFilePath)
+            && is_readable($this->configFilePath)
+        ) {
+            $this->config = include $this->configFilePath;
+        }
+
+        if (!is_array($this->config)) {
+            $this->config = [];
+        }
 
         if (empty($this->defaultConfig) || !is_array($this->defaultConfig)) {
             throw new RuntimeException("Default config cannot be empty");
@@ -64,7 +68,11 @@ class ConfigHelper
 
     public function save()
     {
-        file_put_contents($this->configFilePath, var_export($this->config));
+        $fh = fopen($this->configFilePath, 'w');
+        fwrite($fh, '<?php'.PHP_EOL.'return ');
+        fwrite($fh, var_export($this->config, true));
+        fwrite($fh, ';');
+        fclose($fh);
     }
 
     public function listKeys($defaultOnly = false) {

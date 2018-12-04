@@ -46,7 +46,7 @@
                                     placeholder="User's Password"
                                     id="jira_password"
                                     type="password"
-                                    name="jira['password']"
+                                    name="jira[password]"
                                     class="validate"
                                     value="{{  jira.password }}"/>
                             <label for="jira_password">Jira User's Password</label>
@@ -58,7 +58,7 @@
                                     placeholder="Host Name"
                                     id="jira_host"
                                     type="text"
-                                    name="jira['host']"
+                                    name="jira[host]"
                                     class="validate"
                                     value="{{  jira.host }}"/>
                             <label for="first_name">Jira Host Name</label>
@@ -68,7 +68,7 @@
                                     placeholder="Cache TTL"
                                     id="jira_password"
                                     type="text"
-                                    name="jira['cacheTTL']"
+                                    name="jira[cacheTTL]"
                                     class="validate"
                                     value="{{  jira.cacheTTL }}"/>
                             <label for="jira_password">Jira Cache TTL</label>
@@ -79,12 +79,12 @@
                 <div class="card-panel grey lighten-5 z-depth-1">
                     <div class="row">
                         <div class="input-field col s4">
-                            <input placeholder="Repo Name" id="repo_name" type="text" name="repo_name" class="validate">
+                            <input placeholder="Repo Name" id="repo_name" type="text" name="repoNames[]" class="validate">
                             <label for="repo_name">Repo Name</label>
                         </div>
 
                         <div class="input-field col s8">
-                            <input placeholder="Repo Path" id="repo_path" type="text" name="repo_path" class="validate">
+                            <input placeholder="Repo Path" id="repo_path" type="text" name="repoPaths[]" class="validate">
                             <label for="repo_path">Repo Path</label>
                         </div>
                     </div>

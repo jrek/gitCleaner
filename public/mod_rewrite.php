@@ -21,12 +21,23 @@ if ($filePath && is_file($filePath)) {
         $filePath != __DIR__ . DIRECTORY_SEPARATOR . 'router.php' &&
         substr(basename($filePath), 0, 1) != '.'
     ) {
-        if (strtolower(substr($filePath, -4)) == '.php') {
+        $ext = pathinfo($filePath, PATHINFO_EXTENSION);
+        if ($ext == 'php') {
             // php file; serve through interpreter
             include $filePath;
         } else {
-            // asset file; serve from filesystem
-            return false;
+            switch ($ext) {
+                case 'css':
+                    $type = 'text/css';
+                    break;
+                case 'js':
+                    $type = 'text/javascript';
+                default:
+                    $type = 'text/html';
+                    break;
+            }
+            header("Content-Type: " . $type);
+            include $filePath;
         }
     } else {
         // disallowed file
